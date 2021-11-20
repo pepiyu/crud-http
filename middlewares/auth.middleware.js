@@ -37,7 +37,7 @@ module.exports.loadUser = (req, res, next) => {
 }
 
 module.exports.isAuthenticated = (req, res, next) => {
-    if (req.user) {
+    if (req.headers.authorization) {
         next()
     } else {
         next(createError(401, "Unauthorized"))
