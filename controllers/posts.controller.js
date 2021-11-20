@@ -34,10 +34,9 @@ module.exports.detail = (req, res, next) => {
 }
 
 module.exports.update = (req, res, next) => {
-    const body = { title, text, author } = req.body
+    const body = { title, text, author, image } = req.body
 
-    Post.findByIdAndUpdate(req.params.id, {...body,
-        image: req.file?.path}, { new: true })
+    Post.findByIdAndUpdate(req.params.id, body, { new: true })
     .then(post => {
         if (post) {
             res.json(post)
