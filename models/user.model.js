@@ -17,7 +17,7 @@ const schema = new mongoose.Schema({
     bio: String,
     active: {
         type: Boolean, 
-        default: false 
+        default: true 
     },
     createdAt: Date,
     updatedAt: Date,

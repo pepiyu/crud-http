@@ -12,7 +12,8 @@ module.exports.list = (req, res, next) => {
 module.exports.create = (req, res, next) => {
     const body = { title, text, author } = req.body
 
-    Post.create(body)
+    Post.create({...body,
+        image: req.file?.path})
         .then(post => {
             res.status(201).json(post)
         })

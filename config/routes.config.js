@@ -4,10 +4,11 @@ const posts = require('../controllers/posts.controller')
 const users = require('../controllers/users.controller')
 const auth = require('../middlewares/auth.middleware')
 const mailer = require('../config/mailer.config')
+const upload = require('../config/multer.config')
 // Routers
 
 router.get('/posts', auth.isAuthenticated, posts.list)
-router.post('/posts', auth.isAuthenticated, posts.create)
+router.post('/posts', auth.isAuthenticated, upload.single("image"), posts.create)
 router.get('/posts/:id', auth.isAuthenticated, posts.detail)
 router.patch('/posts/:id', auth.isAuthenticated, posts.update)
 router.delete('/posts/:id', auth.isAuthenticated, posts.delete)

@@ -1,15 +1,12 @@
 const User = require('../models/user.model')
 const createError = require('http-errors')
 const mailer = require('../config/mailer.config')
-
+const jwt = require('jsonwebtoken')
 
 module.exports.create = (req, res, next) => {
     const data = { name, username, bio, private, password } = req.body
 
-    User.create({
-        ...data,
-        avatar: req.file?.path
-    })
+    User.create(data)
     .then((user) => {
         mailer.sendValidationEmail(user)
         res.status(201).json(user)
@@ -48,10 +45,24 @@ module.exports.login = (req, res, next) => {
             user.checkPassword(password)
             .then((match) => {
                 if (match) {
-                    req.session.userId = user.id
-                    res.json(user)
+
+                    // Cookie auth
+                    //req.session.userId = user.id
+                    //res.json(user)
+
+                    //JWT auth
+                    const token = jwt.sign(
+                        {
+                            sub: user.id,
+                            exp: Math.floor(Date.now() / 1000) + 60 * 60,
+                        }, process.env.JWT_SECRET)
+
+                    res.json({
+                        accessToken: token,
+                    })
+
                 } else {
-                    next(createError(404, "User not found"))
+                    next(createError(401, "Unauthorized"))
                 }
             })
         } else {

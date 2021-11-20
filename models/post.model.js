@@ -14,6 +14,11 @@ const schema = new mongoose.Schema({
         required: true,
         minlength: 5,
     },
+    image: {
+        type: String, 
+        required: true,
+        
+    },
     author: {
         type: String,
         required: true,
